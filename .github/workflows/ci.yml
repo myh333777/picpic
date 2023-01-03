@@ -1,8 +1,5 @@
-name: Deploy gh-pages
-on:
-      push:
-            branches:
-                  - master
+name: Deploy
+on: [push]
 jobs:
   deploy:
     name: Deploy
