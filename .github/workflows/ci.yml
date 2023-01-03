@@ -1,14 +1,22 @@
-name: Deploy gh-pages
+name: Deploy to Deno Deploy
+
+# Controls when the workflow will run
 on:
-      push:
-            branches:
-                  - master
-    permissions:
-      id-token: write # Needed for auth with Deno Deploy
-      contents: read # Needed to clone the repository
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
       build-and-deploy:
             runs-on: ubuntu-20.04
+    permissions:
+      id-token: write # Needed for auth with Deno Deploy
+      contents: read # Needed to clone the repository
             steps:
                   - name: Checkout
                     uses: actions/checkout@master
