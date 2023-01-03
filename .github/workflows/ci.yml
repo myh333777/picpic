@@ -4,11 +4,17 @@ on:
             branches:
                   - master
 jobs:
-      build-and-deploy:
-            runs-on: ubuntu-20.04
-            steps:
-                  - name: Checkout
-                    uses: actions/checkout@master
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Needed for auth with Deno Deploy
+      contents: read # Needed to clone the repository
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+        
 
                   - name: Get npm cache
                     id: cache
@@ -26,8 +32,8 @@ jobs:
                   - name: Build
                     run: npm run build
 
-                  - name: Deploy
-                    uses: peaceiris/actions-gh-pages@v3
-                    with:
-                          github_token: ${{ secrets.GITHUB_TOKEN }}
-                          publish_dir: ./dist
+       - name: Upload to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: "picpic"
+          entrypoint: https://deno.land/std/http/file_server.ts
